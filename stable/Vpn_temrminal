@@ -1,0 +1,6 @@
+#!/bin/bash
+#重启polipo服务
+sudo service polipo restart
+#设置polipo ip端口
+export http_proxy="http://127.0.0.1:8123"
+export https_proxy="https://127.0.0.1:8123"

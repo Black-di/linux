@@ -1,0 +1,43 @@
+#!/bin/bash
+if [ "$1" = "--usb" ]
+then
+	U_disk=$2
+	image=$3
+else
+	image=$1
+        U_disk=/dev/sdb
+fi	
+flash () {
+	echo -e "\033[33;1mStart"
+	pv -preb $image |  sudo dd of=$U_disk bs=8M iflag=fullblock oflag=dsync
+        echo -n "Sleep time:    "
+        for i in `seq 10`
+	do
+		sleep 1
+		echo -e "\b$((10-i))\c"
+	done
+	echo -e "\nsync ...."
+	sync
+	echo "ejecting $U_disk ...."
+	sudo eject $U_disk
+	echo -e "\033[32;1mDone\033[0m"
+}
+check(){
+	if ! [ -a $U_disk ]
+	then
+		echo -e "\033[31;1mNO $U_disk Found!!!\033[0m" 
+		exit 1
+	fi
+	if [ $U_disk = "/dev/sda" ]
+	then
+		echo -e  "\033[31;1;5m$U_disk is your compter !!!!!\033[0m"
+		exit 1
+	fi
+
+}
+main(){
+        check
+        flash
+}
+main 
+

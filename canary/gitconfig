@@ -1,0 +1,66 @@
+#!/bin/bash
+name=$1
+check(){
+if [ -a ~/.gitconfig ]
+then
+        rm ~/.gitconfig
+fi
+if [ -a ~/.gitcookies ]
+then
+        rm ~/.gitcookies
+fi
+
+}
+black_iss(){
+git config --global user.email "black.di@bitland.corp-partner.google.com"
+git config --global user.name "black.di"
+touch ~/.gitcookies
+chmod 0600 ~/.gitcookies
+
+git config --global http.cookiefile ~/.gitcookies
+
+tr , \\t <<\__END__ >>~/.gitcookies
+.googlesource.com,TRUE,/,TRUE,2147483647,o,git-black.di.bitland.corp-partner.google.com=1/J_ShvkYm6HByvK-Ip4lpxFwpCkvheQ6FdN1_rYAGibI
+__END__
+
+}
+black(){
+git config --global user.email "black.di@bitland.com.cn"
+git config --global user.name "black.di"
+touch ~/.gitcookies
+chmod 0600 ~/.gitcookies
+
+git config --global http.cookiefile ~/.gitcookies
+
+tr , \\t <<\__END__ >>~/.gitcookies
+.googlesource.com,TRUE,/,TRUE,2147483647,o,git-black.di.bitland.com.cn=1/WdjvrszVDIbz3dJYoQ_PdvsKHuimmBAjWeWny8m6VLc
+__END__
+
+}
+help1(){
+echo -e "
+Usage: gitconfig [name]
+
+   black		:account for Birch Phoebe and Jerry
+   black_iss		:account for Coral
+   -h			:display current message
+"
+}
+main(){
+	case $name in
+		black)
+			check
+			black
+			;;
+		black_iss)
+			check
+			black_iss
+			;;
+		-h)
+			help1
+			;;
+		*)
+			echo "Wrong parameter"
+	esac
+}
+main

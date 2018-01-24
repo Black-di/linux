@@ -1,0 +1,5 @@
+#!/bin/bash
+OPTION=$1
+case $OPTION in
+	-l)
+

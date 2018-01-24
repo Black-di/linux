@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#test gitconfig
+:<<! if [ -a ~/.gitconfig ]
+then
+	echo "1"
+fi
+if [ -a $1 ]
+then
+	echo "2"       
+fi
+!
+
+#test while
+:<<!
+i=1
+while [ $i != 10 ]
+do
+	echo $i
+	((i++))
+done
+!
+
+#测试进度条
+#这里的print的\r参数是在当前行首输出  []输出内容的额宽度控制
+:<<!
+b=''
+for ((i=0;$i<=100;i+=2))
+do
+        printf "progress:[%-50s]%d%%\r" $b $i
+        sleep 0.1
+        b=#$b
+done
+echo
+!
+#脚本调用参数
+E_WRONG_ARGS=65
+script_parameters="-a -h -m -z"
+ # -a = all, -h = help, 等等.
+echo $0
+if [ $# -ne 5 ]
+	then
+ 	echo "Usage: `basename $0` $script_parameters"
+ 	# `basename $0` 是这个脚本的文件名.
+ 	exit $E_WRONG_ARGS
+fi
