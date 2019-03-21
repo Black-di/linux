@@ -1,0 +1,6 @@
+#!/bin/bash
+BIOS_COM=$1
+EC_COM=$2
+gnome-terminal -t "BIOS_COM" --geometry 104x57+0+0 -x bash -c "sudo minicom -D /dev/pts/$1;exec bash"
+gnome-terminal -t "EC_COM" --geometry 104x57+1000+0 -x bash -c "sudo minicom -D /dev/pts/$2;exec bash"
+

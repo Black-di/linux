@@ -11,6 +11,10 @@ then
 fi
 
 }
+check_status(){
+	cat ~/.gitconfig
+	cat ~/.gitcookies
+}
 black_iss(){
 git config --global user.email "black.di@bitland.corp-partner.google.com"
 git config --global user.name "black.di"
@@ -37,12 +41,26 @@ tr , \\t <<\__END__ >>~/.gitcookies
 __END__
 
 }
+guohui(){
+git config --global user.email "guohui.zhou@bitland.com.cn"
+git config --global user.name "guohui.zhou"
+touch ~/.gitcookies
+chmod 0600 ~/.gitcookies
+
+git config --global http.cookiefile ~/.gitcookies
+
+tr , \\t <<\__END__ >>~/.gitcookies
+.googlesource.com,TRUE,/,TRUE,2147483647,o,git-guohui.zhou.bitland.com.cn=1/qqiM7LS3-mdTrsH1jk6fcybLiBW6P76_32HhA9djhFE4H6QqvLn-7K8nKfRyCOcq
+__END__
+}
 help1(){
 echo -e "
 Usage: gitconfig [name]
 
    black		:account for Birch Phoebe and Jerry
    black_iss		:account for Coral
+   guohui               :account for hana master 
+   status               :check git account status
    -h			:display current message
 "
 }
@@ -55,6 +73,13 @@ main(){
 		black_iss)
 			check
 			black_iss
+			;;
+		guohui)
+			check
+			guohui
+			;;
+		status)
+			check_status
 			;;
 		-h)
 			help1

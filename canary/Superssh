@@ -1,5 +1,63 @@
 #!/bin/bash
-OPTION=$1
-case $OPTION in
-	-l)
+IP="101.1.2.8"
+User="root"
+init(){
+	IP=`arp | grep eth1 | awk -F ' ' '{print $1}'`
+        ssh-keygen -f "/home/black/.ssh/known_hosts" -R $IP
+	IP=`arp | grep eth1 | grep ether | awk -F ' ' '{print $1}'`
+        echo $IP
+}
+SSH(){
+	expect -c "
+                set timeout 1
+		spawn ssh "$User@$IP"
+		expect \"Are you sure you want to continue connecting (yes/no)? \" {send \"yes\n\"}
+		expect \"Password: \" {send \"test0000\n\"}
+        	interact
+		"
+}
+SSH_FILE(){
+	expect -c "
+                set timeout 1
+		spawn scp "$1" "$2"
+		expect \"Are you sure you want to continue connecting (yes/no)? \" {send \"yes\n\"}
+		expect \"Password: \" {send \"test0000\n\"}
+        	interact
+		"
+}
+Help(){
+	echo -e "
+Useage:
 
+--cp      copy file from PC to DUT
+--cp2     copy file from DUt to PC
+--s       SSH
+--help    display current message
+
+
+"
+}
+main(){
+		case $1 in
+			"--cp")
+				init
+				Source_FILE=$2
+				Tagert_FILE=${User}@${IP}:$3
+				SSH_FILE $Source_FILE $Tagert_FILE
+				;;
+			"--cp2")
+				init
+				Source_FILE=${User}@${IP}:$2
+				Tagert_FILE=$3
+				SSH_FILE $Source_FILE $Tagert_FILE
+                                ;;
+			"--s")
+				init
+				SSH
+				;;
+			"--help")
+				Help
+				;;
+		esac
+}
+main $@
